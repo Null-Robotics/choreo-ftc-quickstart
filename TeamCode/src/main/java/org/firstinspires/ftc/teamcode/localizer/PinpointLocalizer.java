@@ -6,6 +6,7 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.joml.Vector2d;
 
 import dev.nullftc.choreolib.drive.ILocalizer;
 
@@ -36,5 +37,21 @@ public class PinpointLocalizer implements ILocalizer {
     @Override
     public void setAngle(double v) {
         pinpointDriver.setHeading(v, AngleUnit.RADIANS);
+    }
+
+    @NonNull
+    @Override
+    public Vector2d getVelocity() {
+        return null;
+    }
+
+    @Override
+    public void setVelocity(@NonNull Vector2d vector2d) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 }

@@ -7,6 +7,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.joml.Vector2d;
 
 import dev.nullftc.choreolib.drive.ILocalizer;
 
@@ -54,5 +55,21 @@ public class OTOSLocalizer implements ILocalizer {
                 position.y,
                 position.h
         ));
+    }
+
+    @NonNull
+    @Override
+    public Vector2d getVelocity() {
+        return null;
+    }
+
+    @Override
+    public void setVelocity(@NonNull Vector2d vector2d) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 }

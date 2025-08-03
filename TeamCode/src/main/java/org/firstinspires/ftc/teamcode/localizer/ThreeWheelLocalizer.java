@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.localizer;
 
+import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.joml.Vector2d;
 
 import dev.nullftc.choreolib.drive.ILocalizer;
 
@@ -22,6 +25,22 @@ public class ThreeWheelLocalizer implements ILocalizer {
 
     @Override
     public void setAngle(double v) {
+
+    }
+
+    @NonNull
+    @Override
+    public Vector2d getVelocity() {
+        return null;
+    }
+
+    @Override
+    public void setVelocity(@NonNull Vector2d vector2d) {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 }
