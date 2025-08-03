@@ -16,7 +16,7 @@ We worked to adapt this system to FTC, allowing for Differential, Mecanum, and S
 
 ## Used By
 
-This project is used by the following teams actively:
+This project is used by the following teams:
 
 - 5064 Aperture Science
 - 22377 Sigmacorns
