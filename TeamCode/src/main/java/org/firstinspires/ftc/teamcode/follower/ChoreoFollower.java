@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.joml.Vector2d;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import dev.nullftc.choreolib.Choreo;
@@ -21,10 +22,9 @@ public class ChoreoFollower<T extends TrajectorySample<T>> implements IFollower 
     private Trajectory<T> trajectory;
     private T closestSample;
     private Pose2D closestPose;
-    boolean busy = false;
     boolean finished = false;
 
-    public ChoreoFollower(String string) {
+    public ChoreoFollower(String string) throws IOException {
         this.trajectory = Choreo.INSTANCE.<T>loadTrajectory(string).orElseThrow(() -> new RuntimeException("Trajectory not found!"));
     }
 
@@ -32,11 +32,6 @@ public class ChoreoFollower<T extends TrajectorySample<T>> implements IFollower 
     @Override
     public ChassisSpeeds update(@NonNull Pose2D pose2D, double v) {
         return new ChassisSpeeds(new Vector2d(), 0.0);
-    }
-
-    @Override
-    public boolean isBusy() {
-        return busy;
     }
 
     @Override

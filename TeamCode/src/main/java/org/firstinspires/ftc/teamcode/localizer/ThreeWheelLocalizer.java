@@ -35,11 +35,6 @@ public class ThreeWheelLocalizer implements ILocalizer {
     }
 
     @Override
-    public void setVelocity(@NonNull Vector2d vector2d) {
-
-    }
-
-    @Override
     public void update() {
 
     }
