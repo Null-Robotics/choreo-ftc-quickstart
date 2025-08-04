@@ -10,61 +10,82 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.joml.Vector2d;
 
 import dev.nullftc.choreolib.drive.ILocalizer;
+import dev.nullftc.wpimath.geometry.Twist2d;
 
 public class OTOSLocalizer implements ILocalizer {
+    private final SparkFunOTOS otos;
+    private SparkFunOTOS.Pose2D lastSDKPose;
+    private Pose2D currPose;
+    private Vector2d currVelocity;
 
-    private SparkFunOTOS sparkFunOTOS;
-
-    public OTOSLocalizer(SparkFunOTOS sparkFunOTOS) {
-        this.sparkFunOTOS = sparkFunOTOS;
+    public OTOSLocalizer(SparkFunOTOS otos) {
+        this.otos = otos;
+        this.lastSDKPose = new SparkFunOTOS.Pose2D(0.0, 0.0, 0.0);
+        this.currPose = new Pose2D(DistanceUnit.MM, 0.0, 0.0, AngleUnit.RADIANS, 0.0);
+        this.currVelocity = new Vector2d();
+        this.otos.setAngularUnit(AngleUnit.RADIANS);
+        this.otos.setLinearUnit(DistanceUnit.METER);
+        this.otos.calibrateImu();
     }
 
     @NonNull
     @Override
     public Pose2D getPose() {
-        SparkFunOTOS.Pose2D pose = sparkFunOTOS.getPosition();
-        DistanceUnit distanceUnit = sparkFunOTOS.getLinearUnit();
-        AngleUnit angleUnit = sparkFunOTOS.getAngularUnit();
-        return new Pose2D(distanceUnit, pose.x, pose.y, angleUnit, pose.h);
+        return currPose;
     }
 
     @Override
-    public void setPose(Pose2D pose2D) {
-        DistanceUnit distanceUnit = sparkFunOTOS.getLinearUnit();
-        AngleUnit angleUnit = sparkFunOTOS.getAngularUnit();
-
-        sparkFunOTOS.setPosition(
-                new SparkFunOTOS.Pose2D(
-                        pose2D.getX(distanceUnit),
-                        pose2D.getY(distanceUnit),
-                        pose2D.getHeading(angleUnit)
-                )
-        );
+    public void setPose(@NonNull Pose2D pose2D) {
+        otos.setPosition(new SparkFunOTOS.Pose2D(
+                pose2D.getX(otos.getLinearUnit()),
+                pose2D.getY(otos.getLinearUnit()),
+                pose2D.getHeading(otos.getAngularUnit())
+        ));
     }
 
     @Override
     public double getAngle() {
-        return sparkFunOTOS.getPosition().h;
+        return currPose.getHeading(otos.getAngularUnit());
     }
 
     @Override
     public void setAngle(double v) {
-        SparkFunOTOS.Pose2D position = sparkFunOTOS.getPosition();
-        sparkFunOTOS.setPosition(new SparkFunOTOS.Pose2D(
-                position.x,
-                position.y,
-                position.h
+        otos.setPosition(new SparkFunOTOS.Pose2D(
+                currPose.getY(DistanceUnit.METER),
+                currPose.getY(DistanceUnit.METER),
+                v
         ));
     }
 
     @NonNull
     @Override
     public Vector2d getVelocity() {
-        return null;
+        return currVelocity;
     }
 
     @Override
     public void update() {
+        lastSDKPose = otos.getPosition();
 
+        currPose = new Pose2D(
+                otos.getLinearUnit(),
+                lastSDKPose.x,
+                lastSDKPose.y,
+                otos.getAngularUnit(),
+                lastSDKPose.h
+        );
+
+        SparkFunOTOS.Pose2D velocity = otos.getVelocity();
+        currVelocity.set(velocity.x, velocity.y);
+    }
+
+    @NonNull
+    @Override
+    public Twist2d toTwist2d(Pose2D start, Pose2D end) {
+        double dx = end.getX(DistanceUnit.METER) - start.getX(DistanceUnit.METER);
+        double dy = end.getY(DistanceUnit.METER) - start.getY(DistanceUnit.METER);
+        double dTheta = end.getHeading(AngleUnit.RADIANS) - start.getHeading(AngleUnit.RADIANS);
+
+        return new Twist2d(dx, dy, dTheta);
     }
 }
