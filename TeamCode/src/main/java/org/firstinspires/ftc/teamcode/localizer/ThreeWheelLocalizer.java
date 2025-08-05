@@ -7,6 +7,7 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.localizer.config.PinpointConfig;
 import org.joml.Vector2d;
 
@@ -49,9 +50,9 @@ public class ThreeWheelLocalizer implements ILocalizer {
     @NonNull
     @Override
     public Twist2d toTwist2d(Pose2D start, Pose2D end) {
-        double dx = end.getX(DistanceUnit.METER) - start.getX(DistanceUnit.METER);
-        double dy = end.getY(DistanceUnit.METER) - start.getY(DistanceUnit.METER);
-        double dTheta = end.getHeading(AngleUnit.RADIANS) - start.getHeading(AngleUnit.RADIANS);
+        double dx = end.getX(Constants.PREFERRED_DISTANCE_UNIT) - start.getX(Constants.PREFERRED_DISTANCE_UNIT);
+        double dy = end.getY(Constants.PREFERRED_DISTANCE_UNIT) - start.getY(Constants.PREFERRED_DISTANCE_UNIT);
+        double dTheta = end.getHeading(Constants.PREFERRED_ANGULAR_UNIT) - start.getHeading(Constants.PREFERRED_ANGULAR_UNIT);
 
         return new Twist2d(dx, dy, dTheta);
     }

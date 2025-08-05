@@ -7,6 +7,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.localizer.config.OTOSConfig;
 import org.joml.Vector2d;
 
@@ -22,11 +23,11 @@ public class OTOSLocalizer implements ILocalizer {
     public OTOSLocalizer(SparkFunOTOS otos) {
         this.otos = otos;
         this.lastSDKPose = new SparkFunOTOS.Pose2D(0.0, 0.0, 0.0);
-        this.currPose = new Pose2D(DistanceUnit.MM, 0.0, 0.0, AngleUnit.RADIANS, 0.0);
+        this.currPose = new Pose2D(Constants.PREFERRED_DISTANCE_UNIT, 0.0, 0.0, Constants.PREFERRED_ANGULAR_UNIT, 0.0);
         this.currVelocity = new Vector2d();
 
-        this.otos.setAngularUnit(AngleUnit.RADIANS);
-        this.otos.setLinearUnit(DistanceUnit.METER);
+        this.otos.setAngularUnit(Constants.PREFERRED_ANGULAR_UNIT);
+        this.otos.setLinearUnit(Constants.PREFERRED_DISTANCE_UNIT);
 
         this.otos.setLinearScalar(OTOSConfig.LINEAR_SCALAR);
         this.otos.setAngularScalar(OTOSConfig.ANGULAR_SCALAR);
@@ -57,8 +58,8 @@ public class OTOSLocalizer implements ILocalizer {
     @Override
     public void setAngle(double v) {
         otos.setPosition(new SparkFunOTOS.Pose2D(
-                currPose.getY(DistanceUnit.METER),
-                currPose.getY(DistanceUnit.METER),
+                currPose.getY(Constants.PREFERRED_DISTANCE_UNIT),
+                currPose.getY(Constants.PREFERRED_DISTANCE_UNIT),
                 v
         ));
     }
@@ -88,9 +89,9 @@ public class OTOSLocalizer implements ILocalizer {
     @NonNull
     @Override
     public Twist2d toTwist2d(Pose2D start, Pose2D end) {
-        double dx = end.getX(DistanceUnit.METER) - start.getX(DistanceUnit.METER);
-        double dy = end.getY(DistanceUnit.METER) - start.getY(DistanceUnit.METER);
-        double dTheta = end.getHeading(AngleUnit.RADIANS) - start.getHeading(AngleUnit.RADIANS);
+        double dx = end.getX(Constants.PREFERRED_DISTANCE_UNIT) - start.getX(Constants.PREFERRED_DISTANCE_UNIT);
+        double dy = end.getY(Constants.PREFERRED_DISTANCE_UNIT) - start.getY(Constants.PREFERRED_DISTANCE_UNIT);
+        double dTheta = end.getHeading(Constants.PREFERRED_ANGULAR_UNIT) - start.getHeading(Constants.PREFERRED_ANGULAR_UNIT);
 
         return new Twist2d(dx, dy, dTheta);
     }

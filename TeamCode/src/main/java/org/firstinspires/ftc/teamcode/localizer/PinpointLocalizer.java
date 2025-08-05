@@ -8,6 +8,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.localizer.config.PinpointConfig;
 import org.joml.Vector2d;
 
@@ -59,12 +60,12 @@ public class PinpointLocalizer implements ILocalizer {
 
     @Override
     public double getAngle() {
-        return currPose.getHeading(AngleUnit.RADIANS);
+        return currPose.getHeading(Constants.PREFERRED_ANGULAR_UNIT);
     }
 
     @Override
     public void setAngle(double v) {
-        pinpoint.setHeading(v, AngleUnit.RADIANS);
+        pinpoint.setHeading(v, Constants.PREFERRED_ANGULAR_UNIT);
     }
 
     @NonNull
@@ -76,17 +77,17 @@ public class PinpointLocalizer implements ILocalizer {
     @Override
     public void update() {
         currPose = pinpoint.getPosition();
-        double vx = pinpoint.getVelX(DistanceUnit.METER);
-        double vy = pinpoint.getVelY(DistanceUnit.METER);
+        double vx = pinpoint.getVelX(Constants.PREFERRED_DISTANCE_UNIT);
+        double vy = pinpoint.getVelY(Constants.PREFERRED_DISTANCE_UNIT);
         currVelocity.set(vx, vy);
     }
 
     @NonNull
     @Override
     public Twist2d toTwist2d(Pose2D start, Pose2D end) {
-        double dx = end.getX(DistanceUnit.METER) - start.getX(DistanceUnit.METER);
-        double dy = end.getY(DistanceUnit.METER) - start.getY(DistanceUnit.METER);
-        double dTheta = end.getHeading(AngleUnit.RADIANS) - start.getHeading(AngleUnit.RADIANS);
+        double dx = end.getX(Constants.PREFERRED_DISTANCE_UNIT) - start.getX(Constants.PREFERRED_DISTANCE_UNIT);
+        double dy = end.getY(Constants.PREFERRED_DISTANCE_UNIT) - start.getY(Constants.PREFERRED_DISTANCE_UNIT);
+        double dTheta = end.getHeading(Constants.PREFERRED_ANGULAR_UNIT) - start.getHeading(Constants.PREFERRED_ANGULAR_UNIT);
 
         return new Twist2d(dx, dy, dTheta);
     }
