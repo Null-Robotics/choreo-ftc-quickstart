@@ -7,6 +7,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.localizer.config.OTOSConfig;
 import org.joml.Vector2d;
 
 import dev.nullftc.choreolib.drive.ILocalizer;
@@ -23,8 +24,13 @@ public class OTOSLocalizer implements ILocalizer {
         this.lastSDKPose = new SparkFunOTOS.Pose2D(0.0, 0.0, 0.0);
         this.currPose = new Pose2D(DistanceUnit.MM, 0.0, 0.0, AngleUnit.RADIANS, 0.0);
         this.currVelocity = new Vector2d();
+
         this.otos.setAngularUnit(AngleUnit.RADIANS);
         this.otos.setLinearUnit(DistanceUnit.METER);
+
+        this.otos.setLinearScalar(OTOSConfig.LINEAR_SCALAR);
+        this.otos.setAngularScalar(OTOSConfig.ANGULAR_SCALAR);
+
         this.otos.calibrateImu();
     }
 
