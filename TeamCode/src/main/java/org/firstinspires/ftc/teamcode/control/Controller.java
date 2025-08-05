@@ -6,4 +6,5 @@ public interface Controller<T> {
     ElapsedTime timer = new ElapsedTime();
 
     T update(T current, T setpoint);
+    void reset();
 }
